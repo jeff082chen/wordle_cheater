@@ -1,6 +1,7 @@
 import json
 import tkinter as tk
 import tkinter.messagebox
+import tkinter.font as tkFont
 import random
 
 with open('answers.json', 'r') as r:
@@ -103,6 +104,22 @@ def reset():
     var4.set(optionList[2])
     var5.set(optionList[2])
 
+def show():
+    global answers
+
+    newWindow = tk.Toplevel(main)
+    newWindow.title('answers')
+
+    scrollbar = tk.Scrollbar(newWindow)
+    scrollbar.pack(side = "right", fill = "y")
+
+    listbox = tk.Listbox(newWindow, yscrollcommand = scrollbar.set, font = tkFont.Font(size = 25))
+    for answer in answers:
+        listbox.insert(tk.END, answer)
+    listbox.place(x = 0, y = 0, width = 450, height = 120)
+
+    scrollbar.config(command = listbox.yview)
+
 
 
 
@@ -121,6 +138,8 @@ resetButton = tk.Button(main, text = "reset", command = reset)
 
 myGuess = tk.StringVar()
 myGuessEntry = tk.Entry(main, textvariable = myGuess)
+
+buttonExample = tk.Button(main, text = "show", command = show)
 
 optionList = ['Green', 'Yellow', 'Gray']
 
@@ -163,5 +182,6 @@ checkButton.place(x = 20, y = 75, width = 55, height = 20)
 remainLabel.place(x = 95, y = 75, width = 250, height = 20)
 
 resetButton.place(x = 20, y = 100, width = 55, height = 20)
+buttonExample.place(x = 80, y = 100, width = 55, height = 20)
 
 main.mainloop()
