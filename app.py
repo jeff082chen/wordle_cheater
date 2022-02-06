@@ -9,6 +9,14 @@ with open('answers.json', 'r') as r:
 guess = ''
 result = [0, 0, 0, 0, 0]
 
+def get_random(answers):
+    n = 0
+    while n < 10:
+        guess = random.choice(answers)
+        if len(guess) == len(set(guess)):
+            return guess
+        n += 1
+
 def get_result(guess, answer):
     result = [0, 0, 0, 0, 0]
     temp = [0, 0, 0, 0, 0]
@@ -54,7 +62,8 @@ def select():
     answers = [answer for answer in answers if get_result(guess, answer) == result]
 
 def generate():
-    myGuess.set(random.choice(answers))
+    global answers
+    myGuess.set(get_random(answers))
     guessLabel.config(text = 'Try this: ' + myGuess.get())
 
 def check():

@@ -23,12 +23,20 @@ def check(guess, answer):
     
     return result
 
+def get_random(answers):
+    n = 0
+    while n < 10:
+        guess = random.choice(answers)
+        if len(guess) == len(set(guess)):
+            return guess
+        n += 1
+
 if __name__ == '__main__':
     bingo = False
 
     while not bingo:
         guess = input()
-        guess = random.choice(answers) if guess == '' else guess
+        guess = get_random(answers) if guess == '' else guess
         print(guess)
         result = [int(n) for n in input('hows the result? ').split(', ')]
 
