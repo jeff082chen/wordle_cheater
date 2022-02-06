@@ -1,5 +1,6 @@
 # wordle-cheater
 this is a very simple Wordle helper~
+made by Python Tkinter
 
 # How to download
 ``` zsh
@@ -15,8 +16,9 @@ $ python3 app.py
 # How to use
 <img src="https://github.com/jeff082chen/wordle_cheater/blob/main/exemple/image.png" width="500"/>  
 
-1. type your guess in the input box, or click 'random' button to generate a random guess.
+1. click 'random' button to generate a random guess, or type your own guess in the input box.
 2. try this word in wordle game
 3. select the result in "How's the result?"
-4. click 'check', and program will elete the words that cannot be the answer from our database
-5. try again!
+4. click 'check', and program will delete the words that cannot be the answer from our database
+5. if you want to check the possible answers, clik 'show' to show what's remain
+6. try again!
