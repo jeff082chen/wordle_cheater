@@ -13,7 +13,7 @@ $ python3 app.py
 ```
 
 # How to use
-<img src="https://github.com/jeff082chen/wordle-cheater/blob/main/exemple/image.png" width="500"/>  
+<img src="https://github.com/jeff082chen/wordle_cheater/blob/main/exemple/image.png" width="500"/>  
 
 1. type your guess in the input box, or click 'random' button to generate a random guess.
 2. try this word in wordle game
