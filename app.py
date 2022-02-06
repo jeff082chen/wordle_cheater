@@ -7,6 +7,9 @@ import random
 with open('answers.json', 'r') as r:
     answers = json.load(r)
 
+pa = answers['possible_answers']
+ta = answers['total_answers']
+
 guess = ''
 result = [0, 0, 0, 0, 0]
 
@@ -57,24 +60,28 @@ def getResult():
     result[4] = transform(var5.get())
 
 def select():
-    global answers
+    global pa
+    global ta
     global result
 
-    answers = [answer for answer in answers if get_result(guess, answer) == result]
+    pa = [answer for answer in pa if get_result(guess, answer) == result]
+    ta = [answer for answer in ta if get_result(guess, answer) == result]
 
 def generate():
-    global answers
-    myGuess.set(get_random(answers))
+    global pa
+
+    myGuess.set(get_random(pa))
     guessLabel.config(text = 'Try this: ' + myGuess.get())
 
 def check():
+    global ta
     global guess
 
     guess = myGuess.get()
     if guess == '':
         tkinter.messagebox.showwarning('warning', 'guess a number!')
         return
-    if guess not in answers:
+    if guess not in ta:
         tkinter.messagebox.showwarning('warning', 'answer is wrong!')
         myGuess.set('')
         return
@@ -83,20 +90,25 @@ def check():
     select()
     myGuess.set('')
     guessLabel.config(text = 'Try this: ')
-    remainLabel.config(text = f'There\'s {len(answers)} possible answers remain')
+    remainLabel.config(text = f'There\'s {len(ta)} possible answers remain')
+    print(len(pa))
 
 def reset():
-    global answers
+    global pa
+    global ta
     global guess
     global result
 
     with open('answers.json', 'r') as r:
         answers = json.load(r)
 
+    pa = answers['possible_answers']
+    ta = answers['total_answers']
+
     guess = ''
     result = [0, 0, 0, 0, 0]
 
-    remainLabel.config(text = f'There\'s {len(answers)} possible answers remain')
+    remainLabel.config(text = f'There\'s {len(ta)} possible answers remain')
 
     var1.set(optionList[2])
     var2.set(optionList[2])
@@ -105,7 +117,7 @@ def reset():
     var5.set(optionList[2])
 
 def show():
-    global answers
+    global ta
 
     newWindow = tk.Toplevel(main)
     newWindow.title('answers')
@@ -114,7 +126,7 @@ def show():
     scrollbar.pack(side = "right", fill = "y")
 
     listbox = tk.Listbox(newWindow, yscrollcommand = scrollbar.set, font = tkFont.Font(size = 25))
-    for answer in answers:
+    for answer in ta:
         listbox.insert(tk.END, answer)
     listbox.place(x = 0, y = 0, width = 450, height = 120)
 
@@ -130,7 +142,7 @@ main.geometry('450x120')
 
 guessLabel = tk.Label(main, text = 'Try this: ')
 resultLabel = tk.Label(main, text = 'How\'s the result?')
-remainLabel = tk.Label(main, text = f'There\'s {len(answers)} possible answers remain')
+remainLabel = tk.Label(main, text = f'There\'s {len(ta)} possible answers remain')
 myGuessLabel = tk.Label(main, text = 'My Guess: ')
 guessButton = tk.Button(main, text = "random", command = generate)
 checkButton = tk.Button(main, text = "check", command = check)

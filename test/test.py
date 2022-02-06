@@ -4,6 +4,9 @@ import random
 with open('answers.json', 'r') as r:
     answers = json.load(r)
 
+pa = answers['possible_answers']
+ta = answers['total_answers']
+
 def check(guess, answer):
     result = [0, 0, 0, 0, 0]
     temp = [0, 0, 0, 0, 0]
@@ -36,7 +39,7 @@ if __name__ == '__main__':
 
     while not bingo:
         guess = input()
-        guess = get_random(answers) if guess == '' else guess
+        guess = get_random(pa) if guess == '' else guess
         print(guess)
         result = [int(n) for n in input('hows the result? ').split(', ')]
 
@@ -44,6 +47,7 @@ if __name__ == '__main__':
             bingo = True
             continue
 
-        answers = [answer for answer in answers if check(guess, answer) == result]
+        pa = [answer for answer in pa if check(guess, answer) == result]
+        ta = [answer for answer in ta if check(guess, answer) == result]
 
-        print(f'there\'s {len(answers)} possible answers remain')
+        print(f'there\'s {len(ta)} possible answers remain')
