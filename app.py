@@ -11,6 +11,7 @@ result = [0, 0, 0, 0, 0]
 
 def get_result(guess, answer):
     result = [0, 0, 0, 0, 0]
+    temp = [0, 0, 0, 0, 0]
 
     for i in range(len(result)):
         if guess[i] == answer[i]:
@@ -21,8 +22,9 @@ def get_result(guess, answer):
             continue
 
         for j in range(len(result)):
-            if guess[i] == answer[j] and result[j] != 2:
+            if guess[i] == answer[j] and result[j] != 2 and temp[j] != 1:
                 result[i] = 1
+                temp[j] = 1
     
     return result
 
@@ -48,10 +50,6 @@ def getResult():
 def select():
     global answers
     global result
-
-    for i, n in enumerate(result):
-        if n == 0:
-            answers = [answer for answer in answers if guess[i] not in answer]
 
     answers = [answer for answer in answers if get_result(guess, answer) == result]
 

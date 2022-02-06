@@ -6,6 +6,7 @@ with open('answers.json', 'r') as r:
 
 def check(guess, answer):
     result = [0, 0, 0, 0, 0]
+    temp = [0, 0, 0, 0, 0]
 
     for i in range(len(result)):
         if guess[i] == answer[i]:
@@ -16,8 +17,9 @@ def check(guess, answer):
             continue
 
         for j in range(len(result)):
-            if guess[i] == answer[j] and result[j] != 2:
+            if guess[i] == answer[j] and result[j] != 2 and temp[j] != 1:
                 result[i] = 1
+                temp[j] = 1
     
     return result
 
@@ -33,10 +35,6 @@ if __name__ == '__main__':
         if result == [2, 2, 2, 2, 2]:
             bingo = True
             continue
-
-        for i, n in enumerate(result):
-            if n == 0:
-                answers = [answer for answer in answers if guess[i] not in answer]
 
         answers = [answer for answer in answers if check(guess, answer) == result]
 
