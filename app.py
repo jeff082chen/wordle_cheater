@@ -13,14 +13,6 @@ ta = answers['total_answers']
 guess = ''
 result = [0, 0, 0, 0, 0]
 
-def get_random(answers):
-    n = 0
-    while n < 10:
-        guess = random.choice(answers)
-        if len(guess) == len(set(guess)):
-            return guess
-        n += 1
-
 def get_result(guess, answer):
     result = [0, 0, 0, 0, 0]
     temp = [0, 0, 0, 0, 0]
@@ -70,7 +62,7 @@ def select():
 def generate():
     global pa
 
-    myGuess.set(get_random(pa))
+    myGuess.set(random.choice(pa))
     guessLabel.config(text = 'Try this: ' + myGuess.get())
 
 def check():

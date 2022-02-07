@@ -26,20 +26,34 @@ def check(guess, answer):
     
     return result
 
-if __name__ == '__main__':
+def game(pa, ta):
+    answer = random.choice(pa)
+
     bingo = False
+    n = 0
 
     while not bingo:
-        guess = input()
-        guess = random.choice(pa) if guess == '' else guess
-        print(guess)
-        result = [int(n) for n in input('hows the result? ').split(', ')]
+        guess = random.choice(pa)
+        
+        if len(guess) != 5 or guess not in ta:
+            print('invalid word!')
+            continue
+        
+        result = check(guess, answer)
 
         if result == [2, 2, 2, 2, 2]:
             bingo = True
-            continue
+            break
 
         pa = [answer for answer in pa if check(guess, answer) == result]
         ta = [answer for answer in ta if check(guess, answer) == result]
 
-        print(f'there\'s {len(ta)} possible answers remain')
+        n += 1
+    
+    return n
+
+if __name__ == '__main__':
+    total = 0
+    for _ in range(1000):
+        total += game(pa, ta) + 1
+    print(total / 1000)
