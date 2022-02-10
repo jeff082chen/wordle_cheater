@@ -7,6 +7,10 @@ with open('answers.json', 'r') as r:
 pa = answers['possible_answers']
 ta = answers['total_answers']
 
+not_duplicate = [ans for ans in pa if len(set(ans)) == 5]
+duplicate = [ans for ans in pa if len(set(ans)) < 5]
+assert len(not_duplicate) + len(duplicate) == len(pa), 'error'
+
 def check(guess, answer):
     result = [0, 0, 0, 0, 0]
     temp = [0, 0, 0, 0, 0]
@@ -26,34 +30,51 @@ def check(guess, answer):
     
     return result
 
-def game(pa, ta):
+def game(pa, ta, not_duplicate, duplicate):
     answer = random.choice(pa)
+    print(f'ans: {answer}\n')
 
     bingo = False
     n = 0
 
     while not bingo:
-        guess = random.choice(pa)
+        guess = not_duplicate[0] if not_duplicate else duplicate[0]
+        print(f'guess: {guess}')
         
         if len(guess) != 5 or guess not in ta:
             print('invalid word!')
             continue
         
         result = check(guess, answer)
+        print(f'result: {result}\n')
 
         if result == [2, 2, 2, 2, 2]:
             bingo = True
             break
 
-        pa = [answer for answer in pa if check(guess, answer) == result]
+        not_duplicate = [answer for answer in not_duplicate if check(guess, answer) == result]
+        duplicate = [answer for answer in duplicate if check(guess, answer) == result]
         ta = [answer for answer in ta if check(guess, answer) == result]
+        print(len(ta))
+        print(len(pa))
 
         n += 1
     
     return n
 
+
 if __name__ == '__main__':
     total = 0
-    for _ in range(1000):
-        total += game(pa, ta) + 1
-    print(total / 1000)
+    n = [0] * 16
+    for _ in range(100):
+        num = game(pa, ta, not_duplicate, duplicate) + 1
+        total += num
+        n[num] += 1
+        print(num)
+
+    print()
+
+    print(total / 100)
+
+    for i in range(1, 16):
+        print(f'{i}: {n[i]}')

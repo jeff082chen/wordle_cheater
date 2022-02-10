@@ -7,6 +7,10 @@ with open('answers.json', 'r') as r:
 pa = answers['possible_answers']
 ta = answers['total_answers']
 
+not_duplicate = [ans for ans in pa if len(set(ans)) == 5]
+duplicate = [ans for ans in pa if len(set(ans)) < 5]
+assert len(not_duplicate) + len(duplicate) == len(pa), 'error'
+
 def check(guess, answer):
     result = [0, 0, 0, 0, 0]
     temp = [0, 0, 0, 0, 0]
@@ -31,7 +35,7 @@ if __name__ == '__main__':
 
     while not bingo:
         guess = input()
-        guess = random.choice(pa) if guess == '' else guess
+        guess = (not_duplicate[0] if not_duplicate else duplicate[0]) if guess == '' else guess
         print(guess)
         result = [int(n) for n in input('hows the result? ').split(', ')]
 
@@ -39,7 +43,8 @@ if __name__ == '__main__':
             bingo = True
             continue
 
-        pa = [answer for answer in pa if check(guess, answer) == result]
+        not_duplicate = [answer for answer in not_duplicate if check(guess, answer) == result]
+        duplicate = [answer for answer in duplicate if check(guess, answer) == result]
         ta = [answer for answer in ta if check(guess, answer) == result]
 
         print(f'there\'s {len(ta)} possible answers remain')

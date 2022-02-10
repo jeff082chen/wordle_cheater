@@ -1,3 +1,4 @@
+from glob import glob
 import json
 import tkinter as tk
 import tkinter.messagebox
@@ -9,6 +10,10 @@ with open('answers.json', 'r') as r:
 
 pa = answers['possible_answers']
 ta = answers['total_answers']
+
+not_duplicate = [ans for ans in pa if len(set(ans)) == 5]
+duplicate = [ans for ans in pa if len(set(ans)) < 5]
+assert len(not_duplicate) + len(duplicate) == len(pa), 'error'
 
 guess = ''
 result = [0, 0, 0, 0, 0]
@@ -33,11 +38,11 @@ def get_result(guess, answer):
     return result
 
 def transform(ss):
-    if ss == 'Green':
+    if ss == '🟩':
         return 2
-    elif ss == 'Yellow':
+    elif ss == '🟨':
         return 1
-    elif ss == 'Gray':
+    elif ss == '⬜':
         return 0
     else:
         return -1
@@ -54,19 +59,27 @@ def getResult():
 def select():
     global pa
     global ta
+    global duplicate
+    global not_duplicate
     global result
 
     pa = [answer for answer in pa if get_result(guess, answer) == result]
     ta = [answer for answer in ta if get_result(guess, answer) == result]
+    not_duplicate = [answer for answer in not_duplicate if get_result(guess, answer) == result]
+    duplicate = [answer for answer in duplicate if get_result(guess, answer) == result]
 
 def generate():
-    global pa
+    global duplicate
+    global not_duplicate
 
-    myGuess.set(random.choice(pa))
+    myGuess.set(not_duplicate[0] if not_duplicate else duplicate[0])
     guessLabel.config(text = 'Try this: ' + myGuess.get())
 
 def check():
+    global pa
     global ta
+    global duplicate
+    global not_duplicate
     global guess
 
     guess = myGuess.get()
@@ -84,10 +97,14 @@ def check():
     guessLabel.config(text = 'Try this: ')
     remainLabel.config(text = f'There\'s {len(ta)} possible answers remain')
     print(len(pa))
+    print(len(not_duplicate))
+    print(len(duplicate))
 
 def reset():
     global pa
     global ta
+    global duplicate
+    global not_duplicate
     global guess
     global result
 
@@ -96,6 +113,8 @@ def reset():
 
     pa = answers['possible_answers']
     ta = answers['total_answers']
+    not_duplicate = [ans for ans in pa if len(set(ans)) == 5]
+    duplicate = [ans for ans in pa if len(set(ans)) < 5]
 
     guess = ''
     result = [0, 0, 0, 0, 0]
@@ -136,7 +155,7 @@ guessLabel = tk.Label(main, text = 'Try this: ')
 resultLabel = tk.Label(main, text = 'How\'s the result?')
 remainLabel = tk.Label(main, text = f'There\'s {len(ta)} possible answers remain')
 myGuessLabel = tk.Label(main, text = 'My Guess: ')
-guessButton = tk.Button(main, text = "random", command = generate)
+guessButton = tk.Button(main, text = "help", command = generate)
 checkButton = tk.Button(main, text = "check", command = check)
 resetButton = tk.Button(main, text = "reset", command = reset)
 
@@ -145,7 +164,7 @@ myGuessEntry = tk.Entry(main, textvariable = myGuess)
 
 buttonExample = tk.Button(main, text = "show", command = show)
 
-optionList = ['Green', 'Yellow', 'Gray']
+optionList = ['🟩', '🟨', '⬜']
 
 var1 = tk.StringVar()
 var1.set(optionList[2])
