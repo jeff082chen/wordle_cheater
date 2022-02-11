@@ -1,9 +1,8 @@
-from glob import glob
 import json
 import tkinter as tk
 import tkinter.messagebox
 import tkinter.font as tkFont
-import random
+from test.sort import sort
 
 with open('answers.json', 'r') as r:
     answers = json.load(r)
@@ -67,6 +66,9 @@ def select():
     ta = [answer for answer in ta if get_result(guess, answer) == result]
     not_duplicate = [answer for answer in not_duplicate if get_result(guess, answer) == result]
     duplicate = [answer for answer in duplicate if get_result(guess, answer) == result]
+
+    not_duplicate = sort(not_duplicate)
+    duplicate = sort(duplicate)
 
 def generate():
     global duplicate

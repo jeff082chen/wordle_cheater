@@ -1,5 +1,6 @@
 import json
 import random
+from test.sort import sort, score
 
 with open('answers.json', 'r') as r:
     answers = json.load(r)
@@ -57,6 +58,9 @@ def game(pa, ta, not_duplicate, duplicate):
         ta = [answer for answer in ta if check(guess, answer) == result]
         print(len(ta))
         print(len(pa))
+
+        not_duplicate = sort(not_duplicate)
+        duplicate = sort(duplicate)
 
         n += 1
     

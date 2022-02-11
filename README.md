@@ -1,7 +1,7 @@
 # wordle-cheater
 this is a very simple Wordle helper~  
 made by Python Tkinter  
-+ (the average performance is 3.75 guesses)  
++ (the average performance is 3.69 guesses)  
 <img src="https://github.com/jeff082chen/wordle_cheater/blob/main/exemple/graph.jpg" width="500"/>  
 
 # How to download
